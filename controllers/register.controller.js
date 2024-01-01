@@ -32,3 +32,15 @@ const postRegistration = asyncHandler(async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+
+const getSingleRegistration =  asyncHandler(async(req, res) => {
+    const {id} = req.params;
+    validateMongoID(id);
+    try{
+        const registratedStudent = await Register.findById(id);
+        if(!registratedStudent)
+    }catch(err){
+        res.status(500).json(err);
+    }
+})
