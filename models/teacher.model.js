@@ -11,6 +11,7 @@ const Teachers = mongoose.model(
       email: {
         type: String,
         required: [true, "Provide a valid email"],
+        unique: true,
       },
       password: {
         type: String,

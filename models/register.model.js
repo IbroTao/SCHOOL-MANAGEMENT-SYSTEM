@@ -8,6 +8,14 @@ const Register = mongoose.model(
         type: Boolean,
         default: false,
       },
+      suspended: {
+        type: Boolean,
+        default: false,
+      },
+      blacklisted: {
+        type: Boolean,
+        default: false,
+      },
       image: {
         type: String,
         required: true,
