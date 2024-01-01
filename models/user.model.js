@@ -19,11 +19,17 @@ const Users = mongoose.model(
       role: {
         type: String,
       },
-      resetToken: {
+      refreshToken: {
         type: String,
       },
-      resetTokenExpiration: {
+      passwordChangedAt: {
+        type: Date,
+      },
+      passwordResetToken: {
         type: String,
+      },
+      passwordResetTokenExpiration: {
+        type: Date,
       },
     },
     {

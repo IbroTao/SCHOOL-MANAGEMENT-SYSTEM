@@ -6,6 +6,8 @@ const { Register } = require("../models/register.model");
 const { hashSync, compareSync } = require("bcryptjs");
 const { generateToken } = require("../configs/generateToken");
 const { generateRefreshToken } = require("../configs/generateRefreshToken");
+const { sendMail } = require("../configs/mail");
+const { randomBytes } = require("crypto");
 require("dotenv").config();
 const SECRET = process.env.SECRET;
 
@@ -189,7 +191,7 @@ const adminLogin = asyncHandler(async (req, res) => {
     const comparePassword = compareSync(password, admin.password);
     if (!comparePassword)
       return res.status(403).json({ message: "Wrong password!" });
-
+    admin.role = "admin";
     if (admin && comparePassword) {
       const refreshToken = await generateRefreshToken(admin._id);
       const updatedAdmin = await Admin.findByIdAndUpdate(
@@ -218,6 +220,61 @@ const adminLogin = asyncHandler(async (req, res) => {
 
 const refreshToken = asyncHandler(async (req, res) => {});
 
+const resetPasswordLink = asyncHandler(async (req, res) => {
+  randomBytes(32, (err, buffer) => {
+    if (err)
+      return res.status(400).json({ message: "Cannot generate random byte" });
+    var cryptoToken = buffer.toString("hex");
+
+    let user = Users.findOne({ email: req.body.email });
+    if (!user)
+      return res.status(404).json({ message: "No user with this credentials" });
+
+    user.passwordResetToken = cryptoToken;
+    user.passwordResetTokenExpiration = Date.now() + 3600000;
+    user.save();
+    return res
+      .status(201)
+      .json({ message: "Password reset link successfully sent", data: users });
+  });
+});
+
+const storePassword = asyncHandler(async (req, res) => {
+  try {
+    const { password } = req.body;
+    let user = await Users.findOne({
+      passwordResetToken: req.params.token,
+      passwordResetTokenExpiration: {
+        $gt: Date.now(),
+      },
+      _id: body.userId,
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Something went wrong, try getting another link" });
+    }
+    user.password = hashSync(password, 12);
+    user.passwordResetToken = undefined;
+    user.passwordResetTokenExpiration = undefined;
+    user.save();
+
+    const response = sendMail({
+      to: user.email,
+      subject: "Password reset link",
+      html: `<p>${user.fullname}, your password has been successfully, visit <a href="http://localhost:5000/auth/student/signup"> to confirm your changes.</p>`,
+    });
+    response;
+    return res.status(200).json({
+      message: "Password changed successfully",
+      user: user,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = {
   studentSignUp,
   studentLogin,
@@ -225,4 +282,6 @@ module.exports = {
   loginTeachers,
   adminSignUp,
   adminLogin,
+  resetPasswordLink,
+  storePassword,
 };
