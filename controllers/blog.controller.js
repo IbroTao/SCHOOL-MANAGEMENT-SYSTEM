@@ -71,13 +71,11 @@ const createBlog = asyncHandler(async (req, res) => {
       userId: req.get("userAccess"),
       image: image.path,
     });
-    res
-      .status(201)
-      .json({
-        message: "Blog created successfully",
-        blog: blog,
-        blogId: blog._id,
-      });
+    res.status(201).json({
+      message: "Blog created successfully",
+      blog: blog,
+      blogId: blog._id,
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -123,6 +121,6 @@ module.exports = {
   deleteBlog,
   editBlog,
   fetchBlogs,
-  getUserBlog,
+  getUserBlogs,
   getSingleBlog,
 };

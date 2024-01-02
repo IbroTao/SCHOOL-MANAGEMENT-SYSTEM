@@ -219,7 +219,7 @@ const resumeSuspendStudent = asyncHandler(async (req, res) => {
 // ADD A STUDENT TO BLACKLIST
 const addStudentToBlacklist = asyncHandler(async (req, res) => {
   try {
-    const student = await Register.findOne({ email });
+    const student = await Register.findOne({ email: req.body.email });
     student.blacklisted = true;
     student.save();
     res.status(200).json({
@@ -232,10 +232,40 @@ const addStudentToBlacklist = asyncHandler(async (req, res) => {
 });
 
 // FETCH ALL BLACKLISTED STUDENTS
-const fetchBlackList = asyncHandler(async (req, res) => {});
+const fetchBlackList = asyncHandler(async (req, res) => {
+  try {
+    const students = await Register.find().sort({
+      createdAt: "desc",
+    });
+    if (students.blacklisted === false)
+      return res
+        .status(404)
+        .json({ message: "Blacklisted students not found" });
+    return res.status(200).json({
+      message: "Found blacklisted students",
+      students: students,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // FETCH ALL SUSPENDED STUDENTS
-const fetchSuspendedStudents = asyncHandler(async (req, res) => {});
+const fetchSuspendedStudents = asyncHandler(async (req, res) => {
+  try {
+    const students = await Register.find().sort({
+      createdAt: "desc",
+    });
+    if (students.suspended === false)
+      return res.status(404).json({ message: "Suspended students not found" });
+    return res.status(200).json({
+      message: "Found suspended teachers",
+      students: students,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // ADD A TEACHER
 const addTeacher = asyncHandler(async (req, res) => {
@@ -358,6 +388,7 @@ module.exports = {
   fetchBlackList,
   fetchSuspendedStudents,
   fetchTeachers,
+  fetchAllStudents,
   fetchNonTeachingStaff,
   addTeacher,
   postNotice,
