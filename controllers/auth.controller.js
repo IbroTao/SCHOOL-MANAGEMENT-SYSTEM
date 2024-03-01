@@ -6,7 +6,7 @@ const { Register } = require("../models/register.model");
 const { hashSync, compareSync } = require("bcryptjs");
 const { generateToken } = require("../configs/generateToken");
 const { generateRefreshToken } = require("../configs/generateRefreshToken");
-const { sendMail } = require("../configs/mail");
+// const { sendMail } = require("../configs/mail");
 const { randomBytes } = require("crypto");
 require("dotenv").config();
 const SECRET = process.env.SECRET;
@@ -25,11 +25,9 @@ const studentSignUp = asyncHandler(async (req, res) => {
       email,
       password: hashSync(password, 12),
     });
-    const token = generateToken(newUser);
     newUser.save();
     return res.status(201).json({
       message: `${newUser.fullname} has signed up successfully`,
-      token: token,
       userId: newUser._id,
     });
   } catch (err) {

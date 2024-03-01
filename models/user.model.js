@@ -18,6 +18,7 @@ const Users = mongoose.model(
       },
       role: {
         type: String,
+        required: true,
       },
       refreshToken: {
         type: String,

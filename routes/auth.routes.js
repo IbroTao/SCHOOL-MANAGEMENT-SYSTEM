@@ -1,7 +1,11 @@
 const { Router } = require("express");
-const { studentSignUp } = require("../controllers/auth.controller");
+const {
+  studentSignUp,
+  studentLogin,
+} = require("../controllers/auth.controller");
 const router = Router();
 
-router.post("/student/signup", studentSignUp);
+router.post("/signup", studentSignUp);
+router.post("/login", studentLogin);
 
 module.exports = router;
