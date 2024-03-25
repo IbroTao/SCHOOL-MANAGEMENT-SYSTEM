@@ -4,10 +4,14 @@ const Teachers = mongoose.model(
   "teachers",
   new mongoose.Schema(
     {
-      name: {
+      fullname: {
         type: String,
         required: [true, "Fill out this form"],
       },
+      // role: {
+      //   type: String,
+      //   //required: true,
+      // },
       email: {
         type: String,
         required: [true, "Provide a valid email"],

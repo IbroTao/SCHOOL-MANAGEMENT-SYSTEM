@@ -13,7 +13,7 @@ const SECRET = process.env.SECRET;
 
 // SIGNUP FOR STUDENTS AND USERS
 const studentSignUp = asyncHandler(async (req, res) => {
-  const { email, password, fullname } = req.body;
+  const { email, password, fullname, role } = req.body;
   try {
     const user = await Register.findOne({ email });
     if (user) {
