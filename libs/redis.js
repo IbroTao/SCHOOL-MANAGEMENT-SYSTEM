@@ -7,3 +7,16 @@ async function addToRedis(key, value, expiresIn = 60 * 60 * 24) {
     throw new Error(error);
   }
 }
+
+async function addRedisForCaching(key, value, expiresIn = 360) {
+  try {
+    return await redisClient.retex(key, expiresIn, value);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+module.exports = {
+  addToRedis,
+  addRedisForCaching,
+};
