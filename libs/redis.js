@@ -16,7 +16,25 @@ async function addRedisForCaching(key, value, expiresIn = 360) {
   }
 }
 
+async function delInRedis(key) {
+  try {
+    return await redisClient.del(key);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+async function getFromRedis(key) {
+  try {
+    return await redisClient.get(key);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 module.exports = {
   addToRedis,
   addRedisForCaching,
+  delInRedis,
+  getFromRedis,
 };
