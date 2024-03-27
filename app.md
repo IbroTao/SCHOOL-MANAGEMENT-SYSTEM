@@ -8,9 +8,9 @@
 
 -Admin can get students registration details.
 
--All users can signup and signin to to the user dashboard and portal , of course different for each category of the users.
+-All users can sign-up and sign-in to to the user dashboard and portal , of course different for each category of the users.
 
--All user’s data (except passwords) during signup can be gotten by the super admin.
+-All user’s data (except passwords) during sign-up can be gotten by the super admin.
 
 -Dedicated blog portal for posting and discussions among students and can be monitored by teachers and admins.
 
@@ -18,22 +18,22 @@
 
 -A dedicated portal for posting news and information by admins and it also has the functionality to notify students and teachers of the latest news.
 
--Admin has different abilities depending on heirachy.
+-Admin has different abilities depending on hierarchy.
 -A complaint section accessible by parents with identification for their wards.
 
 -Student can view their data, can check subjects they offer, can check test scores.
 
--A dedicated portal for viewing of new and submitting of assignments and classworks.
+-A dedicated portal for viewing of new and submitting of assignments and classwork.
 
--Students can view their results and grades imputed by teachers to the result poral.
+-Students can view their results and grades imputed by teachers to the result portal.
 
 -Blacklisting, suspension and expulsion of students can be reflected on students' data as well as prevent access to specific actions.
 
 -All users can add, edit and delete drafts and important files.
 
-\*\*\*Partially implemented functinalitie:
+\*\*\*Partially implemented functionalities:
 
--A video chat plaform to allow for School meetings.
+-A video chat platform to allow for School meetings.
 
 -Special identification customized keys for users.
 
@@ -43,13 +43,13 @@
 
 -Examination portal for writing online exams.
 
--Admin differenciation and authorization.
+-Admin differentiation and authorization.
 
 -Creating registration numbers.
 
 -School online store for school to advertise links to sites for download or purchase of materials.
 
-\*\*\*Remaining funnctinalities:
+\*\*\*Remaining functionalities:
 -Chat app for student to student and teacher to teacher communication.
 
 -Payment functionalities for fees and all payments
