@@ -16,10 +16,10 @@ const Users = mongoose.model(
         type: String,
         required: [true, "Provide a secured password"],
       },
-      // role: {
-      //   type: String,
-      //   required: true,
-      // },
+      role: {
+        type: String,
+        required: true,
+      },
       refreshToken: {
         type: String,
       },

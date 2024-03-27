@@ -8,10 +8,6 @@ const Teachers = mongoose.model(
         type: String,
         required: [true, "Fill out this form"],
       },
-      // role: {
-      //   type: String,
-      //   //required: true,
-      // },
       email: {
         type: String,
         required: [true, "Provide a valid email"],

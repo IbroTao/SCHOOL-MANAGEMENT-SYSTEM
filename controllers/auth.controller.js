@@ -13,7 +13,7 @@ const SECRET = process.env.SECRET;
 
 // SIGNUP FOR STUDENTS AND USERS
 const studentSignUp = asyncHandler(async (req, res) => {
-  const { email, password, fullname, role} = req.body;
+  const { email, password, fullname, role } = req.body;
   try {
     const user = await Register.findOne({ email });
     if (user) {
@@ -22,24 +22,24 @@ const studentSignUp = asyncHandler(async (req, res) => {
 
     let newUser;
 
-    switch(role) {
-      case 'student' || 'Student':
+    switch (role) {
+      case "student" || "Student":
         newUser = await Users.create({
           fullname,
           email,
           password: hashSync(password, 12),
         });
         break;
-      case 'teacher' || 'Teacher':
+      case "teacher" || "Teacher":
         newUser = await Teachers.create({
           fullname,
           email,
-          password: hashSync(password, 12);
+          password: hashSync(password, 12),
         });
         break;
       default:
-        return res.status(400).json({message: "Invalid role"})
-    };
+        return res.status(400).json({ message: "Invalid role" });
+    }
 
     newUser.save();
     return res.status(201).json({
