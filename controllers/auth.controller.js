@@ -3,14 +3,15 @@ const { Admins, Teachers, Users, Register } = require("../models");
 const { hashSync, compareSync } = require("bcryptjs");
 const { generateToken } = require("../configs/generateToken");
 const { generateRefreshToken } = require("../configs/generateRefreshToken");
-// const { sendMail } = require("../configs/mail");
+const { sendMail } = require("../utils/emailConfig");
+const { generateSixDigits } = require("../utils/generateSixDigits");
 const { randomBytes } = require("crypto");
 require("dotenv").config();
 const SECRET = process.env.SECRET;
 
 // SIGNUP FOR STUDENTS AND USERS
 const studentSignUp = asyncHandler(async (req, res) => {
-  const { email, password, fullname, role } = req.body;
+  const { email, password, name, role } = req.body;
   try {
     const user = await Register.findOne({ email });
     if (user) {
@@ -22,21 +23,21 @@ const studentSignUp = asyncHandler(async (req, res) => {
     switch (role) {
       case "student" || "Student":
         newUser = await Users.create({
-          fullname,
+          name,
           email,
           password: hashSync(password, 12),
         });
         break;
       case "teacher" || "Teacher":
         newUser = await Teachers.create({
-          fullname,
+          name,
           email,
           password: hashSync(password, 12),
         });
         break;
       case "admin" || "Admin":
         newUser = await Admins.create({
-          fullname,
+          name,
           email,
           password: hashSync(password, 12),
         });

@@ -4,7 +4,7 @@ const Users = mongoose.model(
   "users",
   new mongoose.Schema(
     {
-      fullname: {
+      name: {
         type: String,
         required: [true, "Fill out this form"],
       },
