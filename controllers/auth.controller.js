@@ -3,7 +3,7 @@ const { Admins, Teachers, Users, Register } = require("../models");
 const { hashSync, compareSync } = require("bcryptjs");
 const { generateToken } = require("../configs/generateToken");
 const { generateRefreshToken } = require("../configs/generateRefreshToken");
-const { sendMail } = require("../utils/emailConfig");
+const { sendEmail } = require("../utils/emailConfig");
 const { generateSixDigits } = require("../utils/generateSixDigits");
 const { addRedisForCaching, addToRedis } = require("../libs/redis");
 
@@ -71,6 +71,13 @@ const studentSignUp = asyncHandler(async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
+});
+
+// <===== ACCOUNT VERIFICATION =====>
+const verifyAccount = asyncHandler(async (req, res) => {
+  const { digits } = req.body;
+  const value = await getFromRedis(digits);
+  if (!value) throw new Error();
 });
 
 // <======== LOGIN FOR STUDENTS AND USERS =========>
