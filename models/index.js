@@ -9,3 +9,6 @@ module.exports.Posts = require("./post.model");
 module.exports.Drafts = require("./drafts.model");
 module.exports.Contacts = require("./contact.model");
 module.exports.Messages = require("./message.model");
+module.exports.Result = require("./result.model");
+module.exports.Subjects = require("./subject.model");
+module.exports.Stores = require("./store.model");
