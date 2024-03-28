@@ -5,11 +5,9 @@ const { generateToken } = require("../configs/generateToken");
 const { generateRefreshToken } = require("../configs/generateRefreshToken");
 const { sendMail } = require("../utils/emailConfig");
 const { generateSixDigits } = require("../utils/generateSixDigits");
-const { randomBytes } = require("crypto");
-require("dotenv").config();
-const SECRET = process.env.SECRET;
+const { addRedisForCaching, addToRedis } = require("../libs/redis");
 
-// SIGNUP FOR STUDENTS AND USERS
+//< ======== SIGNUP FOR STUDENTS AND USERS ==========>
 const studentSignUp = asyncHandler(async (req, res) => {
   const { email, password, name, role } = req.body;
   try {
