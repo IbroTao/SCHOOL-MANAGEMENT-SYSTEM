@@ -9,6 +9,7 @@ const sendEmail = async ({ to, subject, html }) => {
     service: "gmail",
     name: SMTP_NAME,
     port: SMTP_PORT,
+    host: SMTP_HOST,
     secure: true,
     auth: {
       user: sender,
