@@ -43,17 +43,37 @@ const studentSignUp = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: "Invalid role" });
     }
 
+    const digits = generateSixDigits();
+    await addToRedis(digits.toString(), newUser._id.toString(), 60 * 60 * 3);
+
+    const text = `<p>Thanks creating an account with us at our institution.
+  To continue registration, we sent a 6-digits code to you for further verification and authentication.
+
+  Your 6-digit code is <h4>${digits}</h4>
+
+  Kindly enter the code into your device to continue the registration process. For any help, you can contact us at .
+
+  Best Wishes,
+  School ICTeam</p>`;
+
+    await sendEmail({
+      to: email,
+      subject: "Account Verification",
+      html: `<h4>Dear ${name}</h4> ${text}`,
+    });
     newUser.save();
     return res.status(201).json({
-      message: `${newUser.fullname} has signed up successfully`,
+      message:
+        "6 digits code has been sent to your email for user verification",
       userId: newUser._id,
+      newUser,
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// LOGIN FOR STUDENTS AND USERS
+// <======== LOGIN FOR STUDENTS AND USERS =========>
 const studentLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -171,7 +191,7 @@ const adminSignUp = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const image = req.file;
     if (!req.file)
-      return res.status(400).json({ mesaage: "No image attached" });
+      return res.status(400).json({ message: "No image attached" });
 
     const admin = await Admins.findOne({ email });
     if (admin) res.status(400).json({ message: "Admin already exists" });
