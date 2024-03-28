@@ -12,3 +12,4 @@ module.exports.Messages = require("./message.model");
 module.exports.Result = require("./result.model");
 module.exports.Subjects = require("./subject.model");
 module.exports.Stores = require("./store.model");
+module.exports.Register = require("./register.model");

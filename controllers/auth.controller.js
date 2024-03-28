@@ -1,8 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { Users } = require("../models/user.model");
-const { Teachers } = require("../models/teacher.model");
-const { Admin } = require("../models/admin.model");
-const { Register } = require("../models/register.model");
+const { Admins, Teachers, Users, Register } = require("../models");
 const { hashSync, compareSync } = require("bcryptjs");
 const { generateToken } = require("../configs/generateToken");
 const { generateRefreshToken } = require("../configs/generateRefreshToken");
@@ -37,6 +34,12 @@ const studentSignUp = asyncHandler(async (req, res) => {
           password: hashSync(password, 12),
         });
         break;
+      case "admin" || "Admin":
+        newUser = await Admins.create({
+          fullname,
+          email,
+          password: hashSync(password, 12),
+        });
       default:
         return res.status(400).json({ message: "Invalid role" });
     }
@@ -171,9 +174,9 @@ const adminSignUp = asyncHandler(async (req, res) => {
     if (!req.file)
       return res.status(400).json({ mesaage: "No image attached" });
 
-    const admin = await Admin.findOne({ email });
+    const admin = await Admins.findOne({ email });
     if (admin) res.status(400).json({ message: "Admin already exists" });
-    const newAdmin = await Admin.create({
+    const newAdmin = await Admins.create({
       name,
       email,
       image: image.path,
@@ -196,7 +199,7 @@ const adminSignUp = asyncHandler(async (req, res) => {
 const adminLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   try {
-    const admin = await Admin.findOne({ email });
+    const admin = await Admins.findOne({ email });
     if (!admin)
       return res
         .status(404)
@@ -208,7 +211,7 @@ const adminLogin = asyncHandler(async (req, res) => {
     admin.role = "admin";
     if (admin && comparePassword) {
       const refreshToken = await generateRefreshToken(admin._id);
-      const updatedAdmin = await Admin.findByIdAndUpdate(
+      const updatedAdmin = await Admins.findByIdAndUpdate(
         admin.id,
         {
           refreshToken: refreshToken,
