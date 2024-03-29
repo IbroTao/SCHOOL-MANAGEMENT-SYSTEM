@@ -77,7 +77,11 @@ const studentSignUp = asyncHandler(async (req, res) => {
 const verifyAccount = asyncHandler(async (req, res) => {
   const { digits } = req.body;
   const value = await getFromRedis(digits);
-  if (!value) throw new Error();
+  if (!value)
+    throw new Error(
+      "cannot find resource, the 6 digits code might have been expired"
+    );
+  return Users.findOneAndUpdate({ _id: value }, { isEmailVerified: true });
 });
 
 // <======== LOGIN FOR STUDENTS AND USERS =========>
@@ -327,4 +331,5 @@ module.exports = {
   adminLogin,
   resetPasswordLink,
   storePassword,
+  verifyAccount,
 };

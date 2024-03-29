@@ -10,8 +10,9 @@ app.use(express.urlencoded({ extended: true }));
 require("dotenv").config();
 const port = process.env.PORT;
 
-// app.use(notFound);
-// app.use(errorHandler);
+app.use(notFound());
+app.use(errorHandler());
+
 app.use("/api/auth", authRouter);
 
 const runApp = (port) => {
