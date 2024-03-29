@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Chat = mongoose.model(
+const Chats = mongoose.model(
   "chats",
   new mongoose.Schema(
     {
