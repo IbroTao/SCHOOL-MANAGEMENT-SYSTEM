@@ -61,8 +61,7 @@ const studentSignUp = asyncHandler(async (req, res) => {
       subject: "Account Verification",
       html: `<h4>Dear ${name}</h4> ${text}`,
     });
-    newUser.save();
-    return res.status(201).json({
+    res.status(201).json({
       message:
         "6 digits code has been sent to your email for user verification",
       userId: newUser._id,
