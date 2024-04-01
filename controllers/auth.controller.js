@@ -1,8 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { Admins, Teachers, Users, Register } = require("../models");
 const { hashSync, compareSync } = require("bcryptjs");
-const { generateToken } = require("../configs/generateToken");
-const { generateRefreshToken } = require("../configs/generateRefreshToken");
+const { generateToken } = require("../configs/generateTokens");
 const { sendEmail } = require("../utils/emailConfig");
 const { generateSixDigits } = require("../utils/generateSixDigits");
 const { addRedisForCaching, addToRedis } = require("../libs/redis");
@@ -102,7 +101,7 @@ const studentLogin = asyncHandler(async (req, res) => {
     if (!comparePassword)
       return res.status(403).json({ message: "Wrong password!" });
     if (user && comparePassword) {
-      const refreshToken = await generateRefreshToken(user._id);
+      const refreshToken = await generateToken(user._id);
       const updatedUser = await Users.findByIdAndUpdate(
         user.id,
         {
@@ -169,7 +168,7 @@ const loginTeachers = asyncHandler(async (req, res) => {
       return res.status(403).json({ message: "Wrong password!" });
 
     if (teacher && comparePassword) {
-      const refreshToken = await generateRefreshToken(user._id);
+      const refreshToken = await generateToken(user._id);
       const updatedTeacher = await Teachers.findByIdAndUpdate(
         teacher.id,
         {
@@ -239,7 +238,7 @@ const adminLogin = asyncHandler(async (req, res) => {
       return res.status(403).json({ message: "Wrong password!" });
     admin.role = "admin";
     if (admin && comparePassword) {
-      const refreshToken = await generateRefreshToken(admin._id);
+      const refreshToken = await generateToken(admin._id);
       const updatedAdmin = await Admins.findByIdAndUpdate(
         admin.id,
         {
