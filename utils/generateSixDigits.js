@@ -1,6 +1,10 @@
-exports.generateSixDigits = () => {
-  const minNum = 100000;
-  const maxNum = 999999;
+exports.uniqueString = () => {
+  const stringOne = Date.now().toString(36);
+  const stringTwo = Math.random().toString(36).substring(2);
+  const d = stringOne + stringTwo;
+  return d.slice(0, 4);
+};
 
-  return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+exports.uniqueSixDigits = () => {
+  return Math.floor(100000 + Math.random() * 900000);
 };

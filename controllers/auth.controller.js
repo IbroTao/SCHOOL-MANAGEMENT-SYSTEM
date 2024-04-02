@@ -15,32 +15,10 @@ const studentSignUp = asyncHandler(async (req, res) => {
       return res.status(400).json({ message: "User has already signed up" });
     }
 
-    let newUser;
-
-    switch (role) {
-      case "student" || "Student":
-        newUser = await Users.create({
-          name,
-          email,
-          password: hashSync(password, 12),
-        });
-        break;
-      case "teacher" || "Teacher":
-        newUser = await Teachers.create({
-          name,
-          email,
-          password: hashSync(password, 12),
-        });
-        break;
-      case "admin" || "Admin":
-        newUser = await Admins.create({
-          name,
-          email,
-          password: hashSync(password, 12),
-        });
-      default:
-        return res.status(400).json({ message: "Invalid role" });
-    }
+    const newUser = await Users.create({
+      ...req.body,
+      password: hashSync(password, 12),
+    });
 
     const digits = generateSixDigits();
     await addToRedis(digits.toString(), newUser._id.toString(), 60 * 60 * 3);
