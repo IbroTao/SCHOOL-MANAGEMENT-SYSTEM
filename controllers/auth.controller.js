@@ -4,7 +4,7 @@ const { Users } = require("../models/user.model");
 const { hashSync, compareSync } = require("bcryptjs");
 const { generateToken } = require("../configs/generateTokens");
 const { sendEmail } = require("../utils/emailConfig");
-const { generateSixDigits } = require("../utils/generateSixDigits");
+const { uniqueSixDigits } = require("../utils/generateSixDigits");
 const { addRedisForCaching, addToRedis } = require("../libs/redis");
 
 //< ======== SIGNUP FOR STUDENTS AND USERS ==========>
@@ -20,7 +20,7 @@ const studentSignUp = asyncHandler(async (req, res) => {
     password: hashSync(password, 12),
   });
 
-  const digits = generateSixDigits();
+  const digits = uniqueSixDigits();
   await addToRedis(digits.toString(), newUser._id.toString(), 60 * 60 * 3);
 
   const text = `<p>Thanks creating an account with us at our institution.
