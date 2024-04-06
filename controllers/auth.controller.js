@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const { Admins, Teachers, Users, Register } = require("../models");
+const { Admins, Teachers, Register } = require("../models");
+const { Users } = require("../models/user.model");
 const { hashSync, compareSync } = require("bcryptjs");
 const { generateToken } = require("../configs/generateTokens");
 const { sendEmail } = require("../utils/emailConfig");
@@ -14,7 +15,7 @@ const studentSignUp = asyncHandler(async (req, res) => {
   //   return res.status(400).json({ message: "User has already signed up" });
   // }
 
-  const newUser = await Users.create({
+  const newUser = new Users({
     ...req.body,
     password: hashSync(password, 12),
   });
