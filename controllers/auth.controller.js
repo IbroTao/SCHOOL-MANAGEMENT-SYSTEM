@@ -8,21 +8,22 @@ const { addRedisForCaching, addToRedis } = require("../libs/redis");
 
 //< ======== SIGNUP FOR STUDENTS AND USERS ==========>
 const studentSignUp = asyncHandler(async (req, res) => {
-  const { email, password, name, role } = req.body;
-  // const user = await Register.findOne({ email });
-  // if (user) {
-  //   return res.status(400).json({ message: "User has already signed up" });
-  // }
+  try {
+    const { email, password, name, role } = req.body;
+    const user = await Register.findOne({ email });
+    if (user) {
+      return res.status(400).json({ message: "User has already signed up" });
+    }
 
-  const newUser = new Users({
-    ...req.body,
-    password: hashSync(password, 12),
-  });
+    const newUser = new Users({
+      ...req.body,
+      password: hashSync(password, 12),
+    });
 
-  const digits = uniqueSixDigits();
-  await addToRedis(digits.toString(), newUser._id.toString(), 60 * 60 * 3);
+    const digits = uniqueSixDigits();
+    await addToRedis(digits.toString(), newUser._id.toString(), 60 * 60 * 3);
 
-  const text = `<p>Thanks creating an account with us at our institution.
+    const text = `<p>Thanks creating an account with us at our institution.
   To continue registration, we sent a 6-digits code to you for further verification and authentication.
 
   Your 6-digit code is <h4>${digits}</h4>
@@ -32,16 +33,20 @@ const studentSignUp = asyncHandler(async (req, res) => {
   Best Wishes,
   School ICTeam</p>`;
 
-  await sendEmail({
-    to: email,
-    subject: "Account Verification",
-    html: `<h4>Dear ${name}</h4> ${text}`,
-  });
-  res.status(201).json({
-    message: "6 digits code has been sent to your email for user verification",
-    userId: newUser._id,
-    newUser,
-  });
+    await sendEmail({
+      to: email,
+      subject: "Account Verification",
+      html: `<h4>Dear ${name}</h4> ${text}`,
+    });
+    res.status(201).json({
+      message:
+        "6 digits code has been sent to your email for user verification",
+      userId: newUser._id,
+      newUser,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
 });
 
 // <===== ACCOUNT VERIFICATION =====>
