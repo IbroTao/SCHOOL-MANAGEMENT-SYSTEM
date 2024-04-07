@@ -1,5 +1,7 @@
 const asyncHandler = require("express-async-handler");
-const { Admins, Teachers, Register, Users } = require("../models");
+const { Admins, Teachers } = require("../models");
+const Register = require("../models/register.model");
+const Users = require("../models/user.model");
 const { hashSync, compareSync } = require("bcryptjs");
 const { generateToken } = require("../configs/generateTokens");
 const { sendEmail } = require("../utils/emailConfig");
