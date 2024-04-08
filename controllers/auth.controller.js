@@ -12,7 +12,7 @@ const { addRedisForCaching, addToRedis } = require("../libs/redis");
 const studentSignUp = asyncHandler(async (req, res) => {
   try {
     const { email, password, name, role } = req.body;
-    const user = await Register.findOne({ email });
+    const user = await Users.findOne({ email });
     if (user) {
       return res.status(400).json({ message: "User has already signed up" });
     }
